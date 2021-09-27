@@ -8,6 +8,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello Maven and Eclipse World!" );
+        System.out.println( "Hello Maven and Eclipse World! OOP21" );
     }
 }
