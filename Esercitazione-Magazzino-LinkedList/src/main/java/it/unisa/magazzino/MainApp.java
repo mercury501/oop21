@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
-import poo21.LinkedList.Implementations.LinkedList;
 
 public class MainApp {
 	public static void main(String[] args) {
@@ -32,7 +31,7 @@ public class MainApp {
 			
 			switch(scelta) {
 			case 1:
-				app.insertNewLinkedList(magazzino, in, System.in);
+				app.insertNewList(magazzino, in, System.in);
 				break;
 			case 2:
 				app.removeList(magazzino, in);
@@ -64,9 +63,7 @@ public class MainApp {
 		return;
 	}
 	
-	/*
-	 @SuppressWarnings("unchecked")
-	 
+	@SuppressWarnings("unchecked")
 	private <T> void insertNewList(Magazzino<T> magazzino, Scanner scan, InputStream in) {
 		List<? extends T> list = null;
 		System.out.println(" Select product type (1 generic product, 2 perishable product): ");
@@ -84,47 +81,10 @@ public class MainApp {
 		String category = scan.next();
 		magazzino.addList(list, category);
 	}
-	*/
-	@SuppressWarnings("unchecked")
-	private <T> void insertNewLinkedList(Magazzino<T> magazzino, Scanner scan, InputStream in) {
-		LinkedList<? extends T> list = new LinkedList<>();
-		
-		System.out.println(" Select product type (1 generic product, 2 perishable product): ");
-		int scelta = scan.nextInt();
-		if(scelta == 1) {
-			list = (LinkedList<T>) createLinkedList(Prodotto.class, scan, in);
-		} else if(scelta == 2) {
-			list = (LinkedList<? extends T>) createLinkedList(ProdottoDeperibile.class, scan, in);
-		} else {
-			System.out.println(" Wrong product type ");
-			scan.close();
-			return;
-		}
-		System.out.println(" Insert category name: ");
-		String category = scan.next();
-		magazzino.addList(list, category);
-	}
-	/*
+	
 	@SuppressWarnings("unchecked")
 	private <T> List<T> createList(Class<T> classe, Scanner scan, InputStream in) {
 		List<T> list = new Vector<>();
-		char exit = 0;
-		do {
-			try {
-				list.add((T) classe.getMethod("createIntance", InputStream.class).invoke(null, in));
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-					| NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			}
-			System.out.println(" terminate (y/n)?: ");
-			exit = scan.next().charAt(0);
-		} while (exit != 'y');
-		return list;
-	}
-	*/
-	@SuppressWarnings("unchecked")
-	private <T> LinkedList<T> createLinkedList(Class<T> classe, Scanner scan, InputStream in) {
-		LinkedList<T> list = new LinkedList<>();
 		char exit = 0;
 		do {
 			try {
@@ -149,7 +109,6 @@ public class MainApp {
 		}
 	}
 
-	
 	private <T,K extends Writer> void stampa(Magazzino<T> magazzino, K out) throws IOException {
 		out.write("Storehouse current state\n");
 		out.write(magazzino.toString() + "\n");		

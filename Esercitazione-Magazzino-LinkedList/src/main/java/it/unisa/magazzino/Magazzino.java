@@ -1,28 +1,36 @@
 package it.unisa.magazzino;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import poo21.LinkedList.Implementations.LinkedList;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
 
 public class Magazzino<T> {
-	private HashMap<String, LinkedList<? extends T>> prodotti;
 	
-	public void addList(LinkedList<? extends T> lista, String nome) {
-		prodotti.put(nome, lista);
-	
+	private LinkedList<List<? extends T>> prodotti;
+	private ArrayList<String> categorie;
+
+	public void addList(List<? extends T> lista, String nome) {
+		prodotti.add(lista);
+		categorie.add(nome);
 	}
 	
 	public boolean removeList(String nome) {
-		return prodotti.remove(nome) != null;
+		int ind = categorie.indexOf(nome);
+		return prodotti.remove(ind) != null;
 	}
 	
 	public List<? extends T> getList(String nome) {
-		return prodotti.get(nome);
+		int ind = categorie.indexOf(nome);
+		return prodotti.get(ind);
 	}
 	
 	public int getProtottiPerCategoria(String categoria) throws NotFound{
-		LinkedList<? extends T> lista = prodotti.get(categoria);
+		
+		int ind = categorie.indexOf(categoria);
+		List<? extends T> lista = prodotti.get(ind);
+		
 		if(lista == null) {
 			throw new NotFound("Categoria " + categoria + "manca");
 		} else {
@@ -30,22 +38,25 @@ public class Magazzino<T> {
 		}
 	}
 
-	public Magazzino(HashMap<String, LinkedList<? extends T>> prodotti) {
+	public Magazzino(LinkedList<List<? extends T>> prodotti, ArrayList<String> categorie) {
 		super();
 		this.prodotti = prodotti;
+		this.categorie = categorie;
 	}
 	
 	public Magazzino() {
-		this.prodotti = new HashMap <>();
+		this.prodotti = new LinkedList <>();
+		this.categorie = new ArrayList<>();
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer buff = new StringBuffer();
 		buff.append("{Magazzino:");
-		for(String nome_classe_prodotto : prodotti.keySet()) {
+		
+		for(String nome_classe_prodotto : this.categorie) {
 			buff.append(" (classe= " + nome_classe_prodotto + ": ");
-			for(Iterator<? extends T> it = prodotti.get(nome_classe_prodotto).iterator();
+			for(Iterator<? extends T> it = prodotti.get(this.categorie.indexOf(nome_classe_prodotto)).iterator();
 					it.hasNext(); ) {
 				buff.append(it.next().toString());
 			}
