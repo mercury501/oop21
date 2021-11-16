@@ -94,4 +94,4 @@ subprocess.run(["powershell", "-Command", rm_old_pom])
 subprocess.run(["powershell", "-Command", rename_pom])
 
 print("DONE!")
-time.sleep(2)
+#time.sleep(2)
