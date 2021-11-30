@@ -39,6 +39,9 @@ pom_mod2 = '''.App</mainClass>
 </project>
 '''
 
+pom_mod_lambdaMod = '''     <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>'''
+
 default_GID = "oop21"
 default_AID = "test" + str(randint(0,25))
 GID = ""
@@ -84,8 +87,11 @@ with open(folder + AID + separator + 'pom.xml') as f1:
     f1.close()
 
 with open(folder + AID + separator + 'npom.xml', 'w') as f2:
-	f2.writelines(lines[:-2])
+	f2.writelines(lines[0:16])
+	f2.writelines(pom_mod_lambdaMod)
+	f2.writelines(lines[17:100])
 	f2.writelines(pom_mod)
+
 	f2.close()
 
 rm_old_pom = "rm " + folder + AID + separator + "pom.xml"
