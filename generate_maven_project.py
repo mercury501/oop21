@@ -89,7 +89,7 @@ with open(folder + AID + separator + 'pom.xml') as f1:
 with open(folder + AID + separator + 'npom.xml', 'w') as f2:
 	f2.writelines(lines[0:16])
 	f2.writelines(pom_mod_lambdaMod)
-	f2.writelines(lines[17:100])
+	f2.writelines(lines[18:73])
 	f2.writelines(pom_mod)
 
 	f2.close()
