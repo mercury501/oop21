@@ -53,5 +53,10 @@ public class App
 
 		System.out.println("Composizione delle classi");
 		scuola.forEach(System.out::println);
+
+		System.out.println("Gli studenti con almeno 3 voti assegnati sono: " + 
+		scuola.stream().flatMap(c -> c.getStudentList().stream()).filter(s -> s.getMarkList().size() >= 3).count()
+		);
+		
     }
 }

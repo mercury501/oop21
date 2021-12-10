@@ -38,7 +38,7 @@ public class Class {
         this.StudentList = PL;
     }
 
-    public List <Student> getPStudentList()  {
+    public List <Student> getStudentList()  {
         return this.StudentList;
     }
 
