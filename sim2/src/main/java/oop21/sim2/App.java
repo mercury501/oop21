@@ -114,8 +114,19 @@ public class App
 			return 0;
 		};
 
-		
+		List <Student> st = new ArrayList<>(studList);
 
+		System.out.println("Lista studenti disordinata: " + st);
+		
+		Collections.sort(st, alfComp);
+		System.out.println("Lista studenti ordinata per cognome: " + 
+			st
+		);
+
+		Collections.sort(st, votComp);
+		System.out.println("Lista studenti ordinata per media voto: " + 
+			st
+		);
 
     }
 }
