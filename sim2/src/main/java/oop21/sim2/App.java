@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class App 
 {
     public static void main( String[] args ) throws Exception
@@ -57,6 +58,64 @@ public class App
 		System.out.println("Gli studenti con almeno 3 voti assegnati sono: " + 
 		scuola.stream().flatMap(c -> c.getStudentList().stream()).filter(s -> s.getMarkList().size() >= 3).count()
 		);
+
+		List <String> profs = scuola.stream().flatMap(c -> c.getProfessorList().stream().map(p -> p.getName() + " " + p.getSurname())).toList();
+		Map <String, Integer> resProf = profs.stream().distinct()
+			.collect(Collectors.toMap(Function.identity(), v -> Collections.frequency(profs, v))
+			);
+
+		List <String> studs = scuola.stream().flatMap(c -> c.getStudentList().stream().map(s -> s.getName() + " " + s.getSurname())).toList();
+		Map <String, Integer> resStud = studs.stream().distinct()
+			.collect(Collectors.toMap(Function.identity(), v -> Collections.frequency(studs, v)));
+
+
+		System.out.println(
+			"Numero medio di classi a cui un docente è assegnato: " + 
+			resProf.values().stream().mapToInt(Integer::intValue).average().getAsDouble()
+		);
+
+		System.out.println(
+			"Numero medio di classi a cui uno studente è assegnato: " + 
+			resStud.values().stream().mapToInt(Integer::intValue).average().getAsDouble()
+		);
+
+		List <Student> studList = scuola.stream().flatMap(c -> c.getStudentList().stream()).toList();
 		
+		System.out.println("Numero di studenti con media sopra la sufficienza: "+
+		scuola.stream().flatMap(c -> c.getStudentList().stream())
+		.mapToDouble(s -> s.getMarkInts().stream().mapToInt(Integer::intValue).average().getAsDouble())
+		.filter(p -> p>= 6).count()
+		);
+
+		System.out.println("Numero di classi in cui gli studenti con media sopra il 7 sono la maggioranza: " + 
+			scuola.stream().filter(
+				c -> c.getStudentList().stream().filter(
+					s -> s.getMarkInts().stream().mapToInt(Integer::intValue).average().getAsDouble() >= 7).count()
+					>= (double) (c.getStudentList().size() / 2)
+				
+			).count()
+		);
+
+		Comparator <Student> alfComp = (s1, s2) -> {
+			int r = s1.getSurname().compareTo(s2.getSurname());
+			if (r != 0)
+				return r;
+			return s1.getName().compareTo(s2.getName());
+		};
+
+		Comparator <Student> votComp = (s1, s2) -> {
+			double m1 = s1.getMarkInts().stream().mapToInt(Integer::intValue).average().getAsDouble();
+			double m2 = s2.getMarkInts().stream().mapToInt(Integer::intValue).average().getAsDouble();
+
+			if (m1 > m2)
+				return -1;
+			if (m2 > m1)
+				return 1;
+			return 0;
+		};
+
+		
+
+
     }
 }

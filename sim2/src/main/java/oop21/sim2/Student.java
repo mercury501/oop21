@@ -28,5 +28,9 @@ public class Student extends Person {
     public List<Mark> getMarkList() {
         return this.MarkList;
     }
+
+    public List <Integer> getMarkInts() {
+        return this.getMarkList().stream().map(v -> v.getMark()).toList();
+    }
     
 }
