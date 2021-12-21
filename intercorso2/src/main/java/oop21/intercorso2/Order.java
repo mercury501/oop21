@@ -2,8 +2,12 @@ package oop21.intercorso2;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 public class Order {
@@ -42,6 +46,31 @@ public class Order {
         return this.itemList;
     }
 
+
+    public int getCostOrder()   {
+        Map <String, Integer> mp = new HashMap<>();
+        Map <String, Integer> costs = Map.of("Appetizer", 5, "Main Course", 10, "Second Course", 13);
+
+        List <String> types = MenuItem.getValidTypes();
+        Iterator <String> it = types.iterator();
+        while (it.hasNext())    {
+            mp.put(it.next(), 0);
+        }
+        
+        this.getItemList().stream().forEach(i -> mp.put(i.getType(), mp.get(i.getType()) + i.getQuantity()));
+
+        int output = 0;
+        it = types.iterator();
+
+        while (it.hasNext())    {
+            String key = it.next();
+            output += mp.get(key) * costs.get(key);
+        }
+
+        return output;
+        
+    }
+
     public double getOrderCost()    {
         List <String> types = this.itemList.stream().map(i -> i.getType()).toList();
         List <Integer> quantities = this.itemList.stream().map(i -> i.getQuantity()).toList();
@@ -51,7 +80,7 @@ public class Order {
         Iterator <String> it = types.iterator();
         Iterator <Integer> it1 = quantities.iterator();
         while (it.hasNext())    {
-            switch(it.next()){
+            switch(it.next())   {
                 case "Appetizer":
                     itemCost = 5;
                     break;

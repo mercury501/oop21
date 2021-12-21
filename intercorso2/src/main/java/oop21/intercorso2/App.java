@@ -51,14 +51,13 @@ public class App {
         long clientiDiSalerno = orderList.stream().map(o -> o.getCustomer())
                 .filter(c -> c.getCityAddress() == "Salerno").distinct().count();
 
-        System.out.println("Numero medio di ordini effettuati da persone di Salerno: "
-                + (double) ordiniDiSalerno / clientiDiSalerno
+        System.out.println("Numero medio di ordini effettuati da persone di Salerno: " +
+                (double) ordiniDiSalerno / clientiDiSalerno
 
         );
 
-        // Esercizio 2 incpompleto
-        //Calcolare il numero di clienti nel sistema che hanno una media di ordini superiore a 10.
-        //Calcolare il numero di ordini, in cui la quantità associata ai secondi è superiore di quelle delle altre voci.
+        // Esercizio 2
+
 
         List <String> cus = orderList.stream().map(o -> o.getCustomer()).map(c -> c.getName() + ", " + c.getSurname()).toList();
         
@@ -79,7 +78,7 @@ public class App {
   
       
         System.out.println("Numero di ordini in cui i secondi son più dei primi: " +
-         ordMoreSecond
+            ordMoreSecond
         );
          
 
@@ -98,8 +97,8 @@ public class App {
         };
 
         Comparator<Order> perCosto = (o1, o2) -> {
-            double costO1 = o1.getOrderCost();
-            double costO2 = o2.getOrderCost();
+            int costO1 = o1.getCostOrder();
+            int costO2 = o2.getCostOrder();
             if (costO1 > costO2)
                 return -1;
             if (costO1 < costO2)
