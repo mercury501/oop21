@@ -4,24 +4,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class App 
-{
-    public static void main( String[] args ) throws Exception
-    {
-        List <Order> orderList = new ArrayList<>();
+public class App {
+    public static void main(String[] args) throws Exception {
+        List<Order> orderList = new ArrayList<>();
         Customer c1 = new Customer("Piero", "Pieroni", "Via Cantone", "Taranto", "555-24253");
         Customer c2 = new Customer("Dado", "Concettina", "Via Togliatti", "Salerno", "555-75453");
         Customer c3 = new Customer("Pero", "Rombo", "Via Ciccio", "Salerno", "555-242785");
         Customer c4 = new Customer("Tommaso", "Biagiozzi", "Via Europa", "Napoli", "555-43253");
 
-        List <MenuItem> l1 = List.of(new MenuItem("Carbonara", 3, "Main Course"), new MenuItem("Costolette", 3, "Second Course"), new MenuItem("Insalata di Polpo", 3, "Appetizer"));
-        List <MenuItem> l2 = List.of(new MenuItem("Pasta e Fagioli", 2, "Main Course"), new MenuItem("Bistecca", 2, "Second Course"), new MenuItem("Involtini Primavera", 2, "Appetizer"));
-        List <MenuItem> l3 = List.of(new MenuItem("Pasta e Patate", 3, "Main Course"), new MenuItem("Seppia", 4, "Second Course"), new MenuItem("Arancino", 3, "Appetizer"));
-        List <MenuItem> l4 = List.of(new MenuItem("Risotto", 1, "Main Course"), new MenuItem("Salsiccia", 1, "Second Course"), new MenuItem("Panzerotto", 1, "Appetizer"));
-
+        List<MenuItem> l1 = List.of(new MenuItem("Carbonara", 3, "Main Course"),
+                new MenuItem("Costolette", 3, "Second Course"), new MenuItem("Insalata di Polpo", 3, "Appetizer"));
+        List<MenuItem> l2 = List.of(new MenuItem("Pasta e Fagioli", 2, "Main Course"),
+                new MenuItem("Bistecca", 2, "Second Course"), new MenuItem("Involtini Primavera", 2, "Appetizer"));
+        List<MenuItem> l3 = List.of(new MenuItem("Pasta e Patate", 3, "Main Course"),
+                new MenuItem("Seppia", 4, "Second Course"), new MenuItem("Arancino", 3, "Appetizer"));
+        List<MenuItem> l4 = List.of(new MenuItem("Risotto", 1, "Main Course"),
+                new MenuItem("Salsiccia", 1, "Second Course"), new MenuItem("Panzerotto", 1, "Appetizer"));
 
         orderList.add(new Order(LocalDate.of(2021, 11, 5), l1, c1));
         orderList.add(new Order(LocalDate.of(2020, 12, 4), l2, c2));
@@ -38,45 +41,51 @@ public class App
         orderList.add(new Order(LocalDate.of(2021, 3, 4), l4, c2));
         orderList.add(new Order(LocalDate.of(2021, 3, 4), l4, c2));
 
-        //Esercizio 1
+        // Esercizio 1
 
-        System.out.println("Ordini col costo superiore a 50 euro: " + 
-            orderList.stream().map(o -> o.getOrderCost()).filter(c -> c >= 50).count()
+        System.out.println("Ordini col costo superiore a 50 euro: " +
+                orderList.stream().map(o -> o.getOrderCost()).filter(c -> c >= 50).count());
+
+        long ordiniDiSalerno = orderList.stream().map(o -> o.getCustomer().getCityAddress()).filter(c -> c == "Salerno")
+                .count();
+        long clientiDiSalerno = orderList.stream().map(o -> o.getCustomer())
+                .filter(c -> c.getCityAddress() == "Salerno").distinct().count();
+
+        System.out.println("Numero medio di ordini effettuati da persone di Salerno: "
+                + (double) ordiniDiSalerno / clientiDiSalerno
+
         );
 
-        long ordiniDiSalerno = orderList.stream().map(o -> o.getCustomer().getCityAddress()).filter(c -> c == "Salerno").count();
-        long clientiDiSalerno = orderList.stream().map(o -> o.getCustomer()).filter(c -> c.getCityAddress() == "Salerno").distinct().count();
+        // Esercizio 2 incpompleto
+        //Calcolare il numero di clienti nel sistema che hanno una media di ordini superiore a 10.
+        //Calcolare il numero di ordini, in cui la quantità associata ai secondi è superiore di quelle delle altre voci.
+
+        List <String> cus = orderList.stream().map(o -> o.getCustomer()).map(c -> c.getName() + ", " + c.getSurname()).toList();
         
-        System.out.println("Numero medio di ordini effettuati da persone di Salerno: " + (double) ordiniDiSalerno / clientiDiSalerno
-            
+        Map <String, Integer> cusFreq = cus.stream().distinct().collect(
+            Collectors.toMap(Function.identity(), v -> Collections.frequency(cus, v))
         );
-
-        //Esercizio 2 incpompleto
-
-        /*
-
-        List <Customer> clienti = orderList.stream().map(o -> o.getCustomer()).distinct().toList();
-
-        List <Customer> clientiOrdini = orderList.stream().map(o -> o.getCustomer()).toList();
-
-        Iterator <Customer> it = clienti.iterator();
- 
 
         System.out.println("Numero di clienti con più di 10 ordini: " + 
-            orderList.stream().map(o -> o.getCustomer())
+            cusFreq.values().stream().filter(v -> v >= 10).count()
         );
 
-        */
-        /*
-        System.out.println("Numero di ordini in cui i secondi son più dei primi: " 
-            
-        );
-        */
-        
-        
-        //Esercizio 3
 
-        Comparator <Order> perData = (Order o1, Order o2) -> {
+
+
+        int ordMoreSecond = (int) orderList.stream().filter(o -> o.courseQuantity("Appetizer") < o.courseQuantity("Second Course") && 
+            o.courseQuantity("Main Course") < o.courseQuantity("Second Course") ).count();
+
+  
+      
+        System.out.println("Numero di ordini in cui i secondi son più dei primi: " +
+         ordMoreSecond
+        );
+         
+
+        // Esercizio 3
+
+        Comparator<Order> perData = (Order o1, Order o2) -> {
             if (o1.getDate().isBefore(o2.getDate()))
                 return 1;
             if (o1.getDate().isAfter(o2.getDate()))
@@ -86,9 +95,9 @@ public class App
             if (r != 0)
                 return r;
             return o1.getCustomer().getName().compareTo(o2.getCustomer().getName());
-        } ;
+        };
 
-        Comparator <Order> perCosto = (o1, o2) -> {
+        Comparator<Order> perCosto = (o1, o2) -> {
             double costO1 = o1.getOrderCost();
             double costO2 = o2.getOrderCost();
             if (costO1 > costO2)
@@ -99,8 +108,7 @@ public class App
 
         };
 
-
-        List <Order> ord = new ArrayList<>(orderList);
+        List<Order> ord = new ArrayList<>(orderList);
         System.out.println("Ordini non ordinati: " + ord);
         Collections.sort(ord, perData);
 

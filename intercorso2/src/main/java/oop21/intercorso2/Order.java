@@ -67,13 +67,15 @@ public class Order {
         return cost;
     }
 
-    /*
-    public int AppetizerQuantity()  {
-        long temp = this.itemList.stream().map(i -> i.getType()).filter(t -> t == "Appetizer").
-            .count();
+
+    public int courseQuantity(String t)  {
+        if (!MenuItem.getValidTypes().contains(t))
+            return -1;
+        long temp = this.itemList.stream().filter(i -> i.getType() == t).map( j -> j.getQuantity())
+            .reduce(0, (subtotal, element) -> subtotal + element);
         return (int) temp;
     }
-    */
+    
     @Override 
     public String toString()    {
         return "Order: [ " + this.date + ", " + this.cust + ", " + this.itemList + " ]";

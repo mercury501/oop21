@@ -6,7 +6,7 @@ public class MenuItem {
     String desc;
     int quantity;
     String type;
-    List <String> validTypes = List.of("Appetizer", "Main Course", "Second Course");
+    static List <String> validTypes = List.of("Appetizer", "Main Course", "Second Course");
 
     public MenuItem (String d, int q, String t) throws Exception {
         if (!validTypes.contains(t))
@@ -26,6 +26,10 @@ public class MenuItem {
 
     public String getType() {
         return this.type;
+    }
+
+    static public List <String> getValidTypes()    {
+        return validTypes;
     }
 
     public void setDescription(String d)    {
