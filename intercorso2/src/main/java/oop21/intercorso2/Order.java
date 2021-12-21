@@ -61,6 +61,8 @@ public class Order {
                 case "Second Course":
                     itemCost = 13;
                     break;
+                default:
+                    itemCost = 0;
             }
             cost += itemCost * it1.next();
         }
