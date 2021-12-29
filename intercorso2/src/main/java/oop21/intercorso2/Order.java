@@ -13,6 +13,12 @@ public class Order {
     Customer cust;
     List <MenuItem> itemList;
 
+    /**
+     * 
+     * @param d date
+     * @param iL menuItem list
+     * @param c customer
+     */
     public Order(LocalDate d, List<MenuItem> iL, Customer c)    {
         Optional <List <MenuItem>> temp = Optional.ofNullable(iL);
         temp.ifPresentOrElse(l -> {this.itemList = l;}, () -> {this.itemList = new ArrayList <MenuItem>();});

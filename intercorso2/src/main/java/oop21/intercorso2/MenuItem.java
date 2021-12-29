@@ -8,6 +8,13 @@ public class MenuItem {
     String type;
     static List <String> validTypes = List.of("Appetizer", "Main Course", "Second Course");
 
+    /**
+     * 
+     * @param d description
+     * @param q quantity
+     * @param t type
+     * @throws Exception
+     */
     public MenuItem (String d, int q, String t) throws Exception {
         if (!validTypes.contains(t))
             throw new Exception("Invalid MenuItem type!");
@@ -36,10 +43,18 @@ public class MenuItem {
         this.desc = d;
     }
 
+    /**
+    @param q quantity of menuItems
+    */
     public void setQuantity(int q)  {
         this.quantity = q;
     }
 
+    /**
+     * 
+     * @param t type
+     * @throws Exception
+     */
     public void setType(String t) throws Exception   {
         if (!validTypes.contains(t))
             throw new Exception("Invalid MenuItem type!");
